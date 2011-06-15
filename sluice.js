@@ -338,3 +338,28 @@ function createSplitDup (arg) {
     var outs = processArgs(Array.prototype.slice.call(arguments, 1));
     return createSplit(split_dup, arg, outs);
 }
+
+function BufferSource (buf) {
+    this.b = buf;
+    this.i = 0;
+    this.work = function () {
+	if (this.i >= this.b.length)
+	    return true;
+	this.push(this.b[this.i]);
+	this.i++;
+	return false;
+    };
+}
+
+function BufferSink (buf) {
+    this.b = buf;
+    this.i = 0;
+    this.work = function () {
+	if (this.i >= this.b.length)
+	    return true;
+	var e = this.pop();
+	this.b[this.i] = e;
+	this.i++;
+	return false;
+    };
+}
